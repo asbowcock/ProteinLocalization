@@ -1,8 +1,5 @@
 indexContourMatrix = 1;
 numContours = 0;
-%zLevel = zeros(length (contourMatrix), 1);
-%xCoordContour = zeros(length (contourMatrix), 2);
-%yCoordContour = zeros(length (contourMatrix), 2);
 contourCellArray = cell (17, 3);
 
 while indexContourMatrix <= length (contourMatrix)
@@ -11,15 +8,12 @@ while indexContourMatrix <= length (contourMatrix)
    numZLevelPairs = contourMatrix(indexContourMatrix, 2);
    contourCellArray{numContours, 1} = numZLevelPairs;
    
-   %zLevel(contourNumber) = contourMatrix(index, 1);
    contourCellArray{numContours, 3} = contourMatrix(indexContourMatrix, 1);
    
    indexContourMatrix = indexContourMatrix + 1;
    xyCoordIndex = 1;
    
    for i = indexContourMatrix:indexContourMatrix + numZLevelPairs - 1
-      %xCoordContour(contourNumber, i) = contourMatrix(i, 1);
-      %yCoordContour(contourNumber, i) = contourMatrix(i, 2);
       
       contourCellArray{numContours, 2}(xyCoordIndex, 1) = contourMatrix(i, 1);
       contourCellArray{numContours, 2}(xyCoordIndex, 2) = contourMatrix(i, 2);
