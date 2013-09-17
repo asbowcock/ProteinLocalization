@@ -7,7 +7,7 @@
 
 xyCoords = getXYCoords (getFinalQDPoints (controller));
 
-for i = 100:length (xyCoords)
+for i = 106:length (xyCoords)
     
     [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:i,:));
 
@@ -44,4 +44,6 @@ set (cellMembraneImage, 'AlphaData', 0.5);
 
     xlabel ('x (pixels)');
     ylabel ('y (pixels)');
+    
+    print ('-dtiff', '-r500','testFigureTiff500'); 
 end
