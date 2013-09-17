@@ -45,5 +45,5 @@ set (cellMembraneImage, 'AlphaData', 0.5);
     xlabel ('x (pixels)');
     ylabel ('y (pixels)');
     
-    print ('-dtiff', '-r500','testFigureTiff500'); 
+    print ('-dpng', '-r500','testFigureTiff500'); 
 end
