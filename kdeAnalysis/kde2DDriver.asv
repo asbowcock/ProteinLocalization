@@ -7,21 +7,20 @@
 
 xyCoords = getXYCoords (getFinalQDPoints (controller));
 
-for i = 100:length (xyCoords)
-    
-    [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:i,:));
+for i = 1:length (xyCoords)
+    [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(i,:));
 
     figure ('visible', 'off'); 
 
-    contourMatrix = contour (xCoord, yCoord, probDensity);
+contourMatrix = contour (xCoord, yCoord, probDensity);
 
-    figure ('visible', 'on');
-    
-    dataNucleusMIP = controller.dataNuc{1}.data (:,:,goodSlices{1}(1):goodSlices{1}(2));
-    dataNucleusMIP = max (dataNucleusMIP, [], 3);
-    cellNucImage = imagesc (dataNucleusMIP);
-    set (cellNucImage, 'AlphaData', 1);
-    colormap (gray);
+figure ('visible', 'on');
+
+dataNucleusMIP = controller.dataNuc{1}.data (:,:,goodSlices{1}(1):goodSlices{1}(2));
+dataNucleusMIP = max (dataNucleusMIP, [], 3);
+cellNucImage = imagesc (dataNucleusMIP);
+set (cellNucImage, 'AlphaData', 1);
+colormap (gray);
 
 %{
 dataQDMIP = controller.dataQD{1}.data (:,:,4:21);
@@ -38,10 +37,9 @@ set (cellMembraneImage, 'AlphaData', 0.5);
 %colormap (gray);
 %}
 
-    contourMatrix = contourMatrix';
+contourMatrix = contourMatrix';
 
-    separateContourMatrix;
+separateContourMatrix;
 
-    xlabel ('x (pixels)');
-    ylabel ('y (pixels)');
-end
+xlabel ('x (pixels)');
+ylabel ('y (pixels)');
