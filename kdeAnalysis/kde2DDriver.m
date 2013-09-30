@@ -5,39 +5,37 @@
 %              on the grayscale image of the nucleus. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-xyCoords = getXYCoords (getFinalQDPoints (controller));
 
-for i = 106:length (xyCoords)
+cellNumber = 1;
+
+xyCoords = getXYCoords (getFinalQDPoints (controller, cellNumber));
+
+for i = length (xyCoords):length (xyCoords)
     
     [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:i,:));
-
-    figure ('visible', 'off'); 
-
-    contourMatrix = contour (xCoord, yCoord, probDensity);
-
-    figure ('visible', 'on');
     
-    dataNucleusMIP = controller.dataNuc{1}.data (:,:,goodSlices{1}(1):goodSlices{1}(2));
+    contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
+    
+    dataNucleusMIP = controller.dataNuc{cellNumber}.data (:,:,goodSlices{cellNumber}(1):goodSlices{cellNumber}(2));
     dataNucleusMIP = max (dataNucleusMIP, [], 3);
     cellNucImage = imagesc (dataNucleusMIP);
     set (cellNucImage, 'AlphaData', 1);
     colormap (gray);
+    
+    %{
+    dataQDMIP = controller.dataQD{1}.data (:,:,goodSlices{1}(1):goodSlices{1}(2));
+    dataQDMIP = max (dataQDMIP, [], 3);
+    imagesc (dataQDMIP);
+    colormap (gray);
+    %}
 
-%{
-dataQDMIP = controller.dataQD{1}.data (:,:,4:21);
-dataQDMIP = max (dataQDMIP, [], 3);
-imagesc (dataQDMIP);
-colormap (gray);
-%}
-
-%{
-dataCellMembraneMIP = controller.cellData{1}.data (:,:,4:21);
-dataCellMembraneMIP = max (dataCellMembraneMIP, [], 3);
-cellMembraneImage = imagesc (dataCellMembraneMIP);
-set (cellMembraneImage, 'AlphaData', 0.5);
-%colormap (gray);
-%}
-
+    %{
+    dataCellMembraneMIP = controller.cellData{1}.data (:,:,goodSlices{1}(1):goodSlices{1}(2));
+    dataCellMembraneMIP = max (dataCellMembraneMIP, [], 3);
+    cellMembraneImage = imagesc (dataCellMembraneMIP);
+    set (cellMembraneImage, 'AlphaData', 1);
+    colormap (gray);
+    %}
     contourMatrix = contourMatrix';
 
     separateContourMatrix;
@@ -45,5 +43,10 @@ set (cellMembraneImage, 'AlphaData', 0.5);
     xlabel ('x (pixels)');
     ylabel ('y (pixels)');
     
-    print ('-dpng', '-r500','testFigureTiff500'); 
+    pTextBox = uicontrol ('style', 'text');
+
+    set (pTextBox, 'Units', 'characters');
+    set (pTextBox, 'String', strcat ('Number of QDs: ', i));
+    
+    %print ('-dpng', '-r500','testFigureTiff500'); 
 end

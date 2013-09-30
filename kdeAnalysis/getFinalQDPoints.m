@@ -1,8 +1,8 @@
-function [ finalQDPoints ] = getFinalQDPoints( controller )
+function [ finalQDPoints ] = getFinalQDPoints( controller, cellNumber )
 %GETFINALQDPOINTS Summary of this function goes here
 %   Detailed explanation goes here
 
-bIsGoodPoints = find (controller.goodPoints{1} == 1);
-finalQDPoints = controller.filteredQD{1} (bIsGoodPoints,:,:);
+bIsGoodPoints = find (controller.goodPoints{cellNumber} == 1);
+finalQDPoints = controller.filteredQD{cellNumber} (bIsGoodPoints,:,:);
 end
 

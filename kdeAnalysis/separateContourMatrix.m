@@ -1,6 +1,6 @@
 indexContourMatrix = 1;
 numContours = 0;
-contourCellArray = cell (17, 3);
+contourCellArray = cell (1, 3); %initializes cell array; will grow if need be
 
 while indexContourMatrix <= length (contourMatrix)
    numContours  = numContours + 1;
