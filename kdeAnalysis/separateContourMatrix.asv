@@ -11,7 +11,7 @@
 % Returned:    The separated contour matrix
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix)
+function [separatedContourMatrix] = separateContourMatrix (contourMatrix)
 
 %Constants
 X_COORD = 1;
@@ -20,7 +20,7 @@ CONTOUR_VALUE_LOCATION = 1;
 NUM_XY_COORDS_LOCATION = 2;
 XY_COORDS_LOCATION = 3;
 
-%Variables
+%Va
 indexContourMatrix = 1;
 numContours = 0;
 separatedContourMatrix = cell (1, 3); %initializes cell array; will grow if need be

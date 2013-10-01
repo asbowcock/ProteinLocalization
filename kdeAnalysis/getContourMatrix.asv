@@ -1,0 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Method:      getContourMatrix
+%
+% Description: Returns the contour matrix for .
+%
+% Parameters:  xCoord      - the controller class
+%              yCoord      - the cell that contains the quantum dots
+%              probDensity - the quantum dots of interest
+%
+% Returned:    The contour matrix.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function [ contourMatrix ] = getContourMatrix (xCoord, yCoord, probDensity)
+
+figure ('visible', 'off');
+
+contourMatrix = contour (xCoord, yCoord, probDensity);
+
+figure ('visible', 'on');
+
+end
+

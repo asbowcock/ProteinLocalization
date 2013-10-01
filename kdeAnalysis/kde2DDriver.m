@@ -5,7 +5,22 @@
 %              on the grayscale image of the nucleus. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+cellNumber = 1;
 
+numGoodQDs = findGoodQDs (controller, cellNumber);
+xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, numGoodQDs));
+
+[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(numGoodQDs,:));
+
+contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
+
+contourMatrix = contourMatrix';
+
+[separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
+
+separateContourMatrixScript;
+
+%{
 cellNumber = 1;
 
 xyCoords = getXYCoords (getFinalQDPoints (controller, cellNumber));
@@ -50,3 +65,4 @@ for i = length (xyCoords):length (xyCoords)
     
     %print ('-dpng', '-r500','testFigureTiff500'); 
 end
+%}

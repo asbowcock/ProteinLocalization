@@ -7,8 +7,12 @@
 
 cellNumber = 1;
 
-xyCoords = getXYCoords (getFinalQD)
+numGoodQDs = findGoodQDs (controller, cellNumber);
+xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, numGoodQDs));
 
+[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(numGoodQDs,:));
+
+contour ()
 
 %{
 cellNumber = 1;

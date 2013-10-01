@@ -9,7 +9,7 @@
 % Returned:    The x and y coordinates contained in the array
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [xyCoords] = getXYCoords (xyzCoords)
+function [ xyCoords ] = getXYCoords(xyzCoords)
 
 X_COORD = 1;
 Y_COORD = 2;
