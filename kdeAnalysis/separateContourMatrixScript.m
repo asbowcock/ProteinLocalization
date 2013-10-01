@@ -72,6 +72,7 @@ for i = 1:numContours
     end
     
 end
+hold off
 
         
       

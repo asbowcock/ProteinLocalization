@@ -7,10 +7,10 @@
 
 cellNumber = 1;
 
-numGoodQDs = findGoodQDs (controller, cellNumber);
-xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, numGoodQDs));
+goodQDs = findGoodQDs (controller, cellNumber);
+xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, goodQDs));
 
-[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(numGoodQDs,:));
+[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:length (goodQDs),:));
 
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 
@@ -18,7 +18,7 @@ contourMatrix = contourMatrix';
 
 [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
 
-separateContourMatrixScript;
+plotContourMap2D (separatedContourMatrix, numContours);
 
 %{
 cellNumber = 1;
