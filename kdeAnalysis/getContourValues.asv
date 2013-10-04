@@ -3,14 +3,10 @@
 %
 % Description: Gets the contour values from the parsed contour matrix.
 %
-% Parameters:  parsedContourMatrix - the separated contour matrix
-%                                    containing the contour values, their
-%                                    corresponding number of x,
-%                                    y-coordinates, and the x,
-%                                    y-coordinates
-%              numContourValues    - the number of contour values
+% Parameters:  parsed      - values for each contour line
+%              numContourValues   - the number of contour values
 %
-% Returned:    The contour values
+% Returned:    The unique contour values
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [contourValues] = getContourValues (parsedContourMatrix, numContours)
