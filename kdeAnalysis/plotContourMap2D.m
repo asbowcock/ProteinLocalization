@@ -25,11 +25,11 @@ XY_COORDS_LOCATION = 3;
 
 hold on 
 for i = 1:numContours
-    hPlot = plot (separatedContourMatrix{i, XY_COORDS_LOCATION}(:, X_COORD), separatedContourMatrix{i, XY_COORDS_LOCATION}(:, Y_COORD)); 
+    hPlot = plot (separatedContourMatrix{:, XY_COORDS_LOCATION}(:, X_COORD), separatedContourMatrix{:, XY_COORDS_LOCATION}(:, Y_COORD)); 
     
     %bootstrap: if statements because cases won't
     %initiate in switch statement
-    
+    %{
     if separatedContourMatrix{i, CONTOUR_VALUE_LOCATION} > 0 && separatedContourMatrix{i, CONTOUR_VALUE_LOCATION} < 0.00002
         set (hPlot, 'Color', 'blue');
     end
@@ -53,7 +53,7 @@ for i = 1:numContours
     if separatedContourMatrix{i, CONTOUR_VALUE_LOCATION} > 0.00005 && separatedContourMatrix{i, CONTOUR_VALUE_LOCATION} < 0.00007
         set (hPlot, 'Color', 'red');
     end
-    
+    %}
 end
 hold off
 
