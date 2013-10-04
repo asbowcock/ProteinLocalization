@@ -20,6 +20,7 @@ contourMatrix = contourMatrix';
     
 plotContourMap2D (separatedContourMatrix, numContours);
 
+plot2DProbDensityEst_3D (xCoord, yCoord, normalizePDE (probDensity));
 
 %{
 cellNumber = 1;
