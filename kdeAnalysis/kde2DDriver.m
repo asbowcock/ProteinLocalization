@@ -20,11 +20,6 @@ contourMatrix = contourMatrix';
     
 plotContourMap2D (separatedContourMatrix, numContours);
 
-hold on 
-
-contour (xCoord, yCoord, probDensity);
-
-hold off
 
 %{
 cellNumber = 1;

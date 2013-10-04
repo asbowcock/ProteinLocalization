@@ -26,10 +26,9 @@ NAVY_BLUE = [0, 0, 0.4000];
 ORANGE = [1.0000, 0.6000, 0.0];
 DARK_CYAN = [0, 0.8000, 1.0000];
 HUNTER_GREEN = [0, 0.6000, 0];
+LIME_GREEN = [0.6, 1.0, 0];
 DARK_RED = [0.6500, 0, 0];
 LINE_WIDTH = 2;
-
-%contourValues = getContourValues (separatedContourMatrix, numContours);
 
 normContourValues = normalizeContourValues (getContourValues (separatedContourMatrix, numContours));
 
@@ -52,6 +51,8 @@ for i = 1:numContours
             set (hPlot, 'Color', HUNTER_GREEN)
     elseif (normContourValues(i) >= 0.4 && normContourValues(i) < 0.5)
             set (hPlot, 'Color', 'green')
+    elseif (normContourValues(i) >= 0.5 && normContourValues(i) < 0.6)
+            set (hPlot, 'Color', LIME_GREEN)
     elseif (normContourValues(i) >= 0.6 && normContourValues(i) < 0.7)
             set (hPlot, 'Color', 'yellow')
     elseif (normContourValues(i) >= 0.7 && normContourValues(i) < 0.8)
@@ -61,7 +62,7 @@ for i = 1:numContours
     elseif (normContourValues(i) >= 0.9 && normContourValues(i) <= 1.0)
             set (hPlot, 'Color', DARK_RED)
     else
-            set (hPlot, 'Color', 'black') %used for error checking if prev if statements did not evaluate to true
+            set (hPlot, 'Color', 'black') %used for error checking i.e. if prev if statements did not evaluate to true
     end
 end
 
