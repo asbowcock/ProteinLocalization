@@ -12,15 +12,19 @@ xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, goodQDs
 
 [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:length (goodQDs),:));
 
-
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 
 contourMatrix = contourMatrix';
 
 [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
     
-%plotContourMap2D (separatedContourMatrix, numContours);
+plotContourMap2D (separatedContourMatrix, numContours);
 
+hold on 
+
+contour (xCoord, yCoord, probDensity);
+
+hold off
 
 %{
 cellNumber = 1;
