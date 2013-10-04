@@ -1,8 +1,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Script:      kde2DDriver
+% 
 % Description: Produces a probability density estimate contour plot based
 %              on x and y coordinates of QDs. The contour plot is overlayed
 %              on the grayscale image of the nucleus. 
+%
+% Parameters:  None
+%
+% Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 cellNumber = 1;
