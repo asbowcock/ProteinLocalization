@@ -1,6 +1,0 @@
-function [selectedXYZCoords] = getSelectedQDCoords(controller, cellNumber, selectedQDs)  
-
-selectedXYZCoords = controller.filteredQD{cellNumber} (selectedQDs,:,:);
-
-end
-

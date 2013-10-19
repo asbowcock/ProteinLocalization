@@ -67,6 +67,9 @@ for i = 1:numContours
 end
 
 hold off
+colorbar;
+xlabel ('x position (pixels)');
+ylabel ('y position (pixels)');
 
 end
 

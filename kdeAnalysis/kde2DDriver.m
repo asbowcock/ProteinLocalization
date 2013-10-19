@@ -22,10 +22,38 @@ contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 contourMatrix = contourMatrix';
 
 [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
-    
+
+cellMembrane = controller.cellData{1}.data(:,:,floor (median (goodSlices{1})));
+
+qdMIP = getQDMaxIntensityProjection (controller, goodSlices, 1);
+qdMIPGray = mat2gray (qdMIP);
+qdMIP_RGB = zeros (size (qdMIP, 1), size (qdMIP, 2), 3);
+qdMIP_RGB (:,:,1) = qdMIPGray;
+qdMIP_RGB (:,:,3) = qdMIPGray;
+qdMIP_RGB (:,:,2) = mat2gray (cellMembrane);
+imagesc (qdMIP_RGB);
+
+%{
+cellMembraneMIP = getCellMembraneMIP (controller, goodSlices, 1);
+cellMembraneMIPGray = mat2gray (cellMembraneMIP);
+cellMembraneMIP_RGB = zeros (size (cellMembraneMIPGray, 1), size (cellMembraneMIPGray, 2), 3);
+cellMembraneMIP_RGB (:,:,2) = cellMembraneMIPGray;
+hQD = imagesc (qdMIP_RGB);
+hold on
+hCM = imagesc (cellMembraneMIP_RGB);
+set (hCM, 'AlphaData', 0.5);
+hold off
+%}
+
 plotContourMap2D (separatedContourMatrix, numContours);
 
-plot2DProbDensityEst_3D (xCoord, yCoord, normalizePDE (probDensity));
+pTextBox = uicontrol ('style', 'text');
+
+set (pTextBox, 'Units', 'characters');
+set (pTextBox, 'String', strcat ('# of QDs: ', {' ' }, int2str (length (goodQDs))));
+set (pTextBox, 'Position', [115,6,25,1.5]);
+
+%plot2DProbDensityEst_3D (xCoord, yCoord, normalizePDE (probDensity));
 
 %{
 cellNumber = 1;
