@@ -17,6 +17,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 NUM_OF_DIMENSIONS = 3;
+GAMMA = 0.5;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 cellNumber = 1;
@@ -37,15 +38,15 @@ cellMembrane = controller.cellData{cellNumber}.data(:,:,floor (median (goodSlice
 qdMIP = getQDMaxIntensityProjection (controller, goodSlices, cellNumber);
 qdMIPGray = mat2gray (qdMIP);
 qdMIP_RGB = zeros (size (qdMIP, 1), size (qdMIP, 2), NUM_OF_DIMENSIONS);
-qdMIP_RGB (:,:,1) = qdMIPGray;
-qdMIP_RGB (:,:,3) = qdMIPGray;
-qdMIP_RGB (:,:,2) = mat2gray (cellMembrane);
+qdMIP_RGB (:,:,1) = imadjust (qdMIPGray);
+qdMIP_RGB (:,:,3) = imadjust (qdMIPGray);
+qdMIP_RGB (:,:,2) = imadjust (mat2gray (cellMembrane),[], [], GAMMA);
 imagesc (qdMIP_RGB);
 
 %plot 2D contour plot over RGB image
 plotContourMap2D (separatedContourMatrix, numContours);
 
-%display number QDs on 2D contour plot
+%display number of QDs on 2D contour plot
 pTextBox = uicontrol ('style', 'text');
 set (pTextBox, 'Units', 'characters');
 set (pTextBox, 'String', strcat ('# of QDs: ', {' '}, int2str (length (goodQDs))));

@@ -13,7 +13,7 @@
 
 function [selectedXYZCoords] = getSelectedQDsXYZCoords (controller, cellNumber, selectedQDs)  
 
-selectedXYZCoords = controller.filteredQD{cellNumber} (selectedQDs,:,:);
+selectedXYZCoords = controller.filteredQD{cellNumber}{1}(selectedQDs,:,:);
 
 end
 
