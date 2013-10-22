@@ -18,6 +18,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 NUM_OF_DIMENSIONS = 3;
 GAMMA = 0.5;
+NUM_QDS_X_POSITION = 0.7;
+NUM_QDS_Y_POSITION = 0.07;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 cellNumber = 1;
@@ -35,22 +37,31 @@ contourMatrix = contourMatrix';
 
 %create and display RGB image of QD MIP and cell membrane
 cellMembrane = controller.cellData{cellNumber}.data(:,:,floor (median (goodSlices{cellNumber})));
+nucMembrane = controller.dataNuc{cellNumber}.data(:,:,floor (median (goodSlices{cellNumber})));
 qdMIP = getQDMaxIntensityProjection (controller, goodSlices, cellNumber);
 qdMIPGray = mat2gray (qdMIP);
-qdMIP_RGB = zeros (size (qdMIP, 1), size (qdMIP, 2), NUM_OF_DIMENSIONS);
-qdMIP_RGB (:,:,1) = imadjust (qdMIPGray);
-qdMIP_RGB (:,:,3) = imadjust (qdMIPGray);
-qdMIP_RGB (:,:,2) = imadjust (mat2gray (cellMembrane),[], [], GAMMA);
-imagesc (qdMIP_RGB);
+overlayRGB = zeros (size (qdMIP, 1), size (qdMIP, 2), NUM_OF_DIMENSIONS);
+%overlayNucRGB = zeros (size (nucMembrane, 1), size (nucMembrane, 2), NUM_OF_DIMENSIONS);
+overlayRGB (:,:,1) = imadjust (qdMIPGray);
+overlayRGB (:,:,3) = imadjust (qdMIPGray);
+overlayRGB (:,:,2) = imadjust (mat2gray (cellMembrane),[], [], GAMMA);
+%overlayNucRGB (:,:,2) = imadjust (mat2gray (nucMembrane),[], [], GAMMA);
+imagesc (overlayRGB);
+
+%{
+hold on; 
+hNucRGB = imagesc (overlayNucRGB);
+set (hNucRGB, 'AlphaData', 0.5);
+hold off;
+%}
 
 %plot 2D contour plot over RGB image
 plotContourMap2D (separatedContourMatrix, numContours);
 
 %display number of QDs on 2D contour plot
-pTextBox = uicontrol ('style', 'text');
-set (pTextBox, 'Units', 'characters');
-set (pTextBox, 'String', strcat ('# of QDs: ', {' '}, int2str (length (goodQDs))));
-set (pTextBox, 'Position', [max(xlim)*0.1,min(ylim)+6,20,1.5]);
+hTextBox = annotation ('textbox', [NUM_QDS_X_POSITION, NUM_QDS_Y_POSITION, 0, 0]);
+set (hTextBox, 'FitBoxToText', 'on');
+set (hTextBox, 'String', strcat ('Number of QDs: ', {' '}, int2str (length (goodQDs))));
 
 %plot 3D surface image
 plot2DProbDensityEst_3D (xCoord, yCoord, probDensity);
