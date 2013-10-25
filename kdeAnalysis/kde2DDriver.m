@@ -1,6 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Script:      kde2DDriver
 % 
+% Version:     1.1
+%
 % Description: Calculates and displays the two dimensional probability
 %              density estimate for all identified quantum dots in a cell.
 %              The probability density estimate is plotted as a
@@ -22,7 +24,7 @@ NUM_QDS_X_POSITION = 0.7;
 NUM_QDS_Y_POSITION = 0.07;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-cellNumber = 1;
+cellNumber = 2;
 
 %Calculate the probability density estimate
 goodQDs = findGoodQDs (controller, cellNumber);
@@ -35,25 +37,16 @@ contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 contourMatrix = contourMatrix';
 [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
 
-%create and display RGB image of QD MIP and cell membrane
+%create and display RGB image of QD MIP, cell membrane, and nuclear membrane
 cellMembrane = controller.cellData{cellNumber}.data(:,:,floor (median (goodSlices{cellNumber})));
 nucMembrane = controller.dataNuc{cellNumber}.data(:,:,floor (median (goodSlices{cellNumber})));
 qdMIP = getQDMaxIntensityProjection (controller, goodSlices, cellNumber);
 qdMIPGray = mat2gray (qdMIP);
 overlayRGB = zeros (size (qdMIP, 1), size (qdMIP, 2), NUM_OF_DIMENSIONS);
-%overlayNucRGB = zeros (size (nucMembrane, 1), size (nucMembrane, 2), NUM_OF_DIMENSIONS);
 overlayRGB (:,:,1) = imadjust (qdMIPGray);
 overlayRGB (:,:,3) = imadjust (qdMIPGray);
-overlayRGB (:,:,2) = imadjust (mat2gray (cellMembrane),[], [], GAMMA);
-%overlayNucRGB (:,:,2) = imadjust (mat2gray (nucMembrane),[], [], GAMMA);
+overlayRGB (:,:,2) = imadjust (mat2gray (cellMembrane) + mat2gray (nucMembrane),[], [], GAMMA);
 imagesc (overlayRGB);
-
-%{
-hold on; 
-hNucRGB = imagesc (overlayNucRGB);
-set (hNucRGB, 'AlphaData', 0.5);
-hold off;
-%}
 
 %plot 2D contour plot over RGB image
 plotContourMap2D (separatedContourMatrix, numContours);
