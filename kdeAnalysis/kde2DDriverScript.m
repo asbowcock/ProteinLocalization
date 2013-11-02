@@ -22,15 +22,18 @@ NUM_OF_DIMENSIONS = 3;
 GAMMA = 0.5;
 NUM_QDS_X_POSITION = 0.7;
 NUM_QDS_Y_POSITION = 0.07;
+LOWER_BOUND = -1000; %nanometers
+UPPER_BOUND = 1000000; %nanometers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-cellNumber = 2;
+cellNumber = 1;
 
 %Calculate the probability density estimate
 goodQDs = findGoodQDs (controller, cellNumber);
-xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, goodQDs));
+selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
+xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, selectQDs));
 
-[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:length (goodQDs),:));
+[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(:,:));
 
 %Parse the contour matrix in preparation for plotting the 2D contour plot
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
@@ -54,7 +57,7 @@ plotContourMap2D (separatedContourMatrix, numContours);
 %display number of QDs on 2D contour plot
 hTextBox = annotation ('textbox', [NUM_QDS_X_POSITION, NUM_QDS_Y_POSITION, 0, 0]);
 set (hTextBox, 'FitBoxToText', 'on');
-set (hTextBox, 'String', strcat ('Number of QDs: ', {' '}, int2str (length (goodQDs))));
+set (hTextBox, 'String', strcat ('Number of QDs: ', {' '}, int2str (length (selectQDs))));
 
 %plot 3D surface image
 plot2DProbDensityEst_3D (xCoord, yCoord, probDensity);

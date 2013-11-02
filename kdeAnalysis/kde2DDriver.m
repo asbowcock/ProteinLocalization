@@ -8,14 +8,19 @@
 %              The probability density estimate is plotted as a
 %              contour plot based on x and y coordinates of QDs. The 
 %              contour plot is overlayed on an RGB image of the cell 
-%              membrane (green) and QDs(magenta). The probability density 
-%              estimate is also plotted as a three dimensional surface
-%              plot.
+%              membrane (green), nuclear membrane (green), and QDs(magenta).
+%              The probability density estimate is also plotted as a three 
+%              dimensional surface plot.
 %
-% Parameters:  None
+% Parameters:  controller - the controller object 
+%              goodSlice  - the good slices from the cell containing the
+%                           QDs
+%              cellNumber - the particular cell to be analyzed
 %
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function kde2DDriver(controller, goodSlices, cellNumber)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 NUM_OF_DIMENSIONS = 3;
@@ -24,9 +29,10 @@ NUM_QDS_X_POSITION = 0.7;
 NUM_QDS_Y_POSITION = 0.07;
 LOWER_BOUND = -1000; %nanometers
 UPPER_BOUND = 1000000; %nanometers
+RED_CHANNEL = 1;
+GREEN_CHANNEL = 2;
+BLUE_CHANNEL = 3;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-cellNumber = 1;
 
 %Calculate the probability density estimate
 goodQDs = findGoodQDs (controller, cellNumber);
@@ -46,9 +52,9 @@ nucMembrane = controller.dataNuc{cellNumber}.data(:,:,floor (median (goodSlices{
 qdMIP = getQDMaxIntensityProjection (controller, goodSlices, cellNumber);
 qdMIPGray = mat2gray (qdMIP);
 overlayRGB = zeros (size (qdMIP, 1), size (qdMIP, 2), NUM_OF_DIMENSIONS);
-overlayRGB (:,:,1) = imadjust (qdMIPGray);
-overlayRGB (:,:,3) = imadjust (qdMIPGray);
-overlayRGB (:,:,2) = imadjust (mat2gray (cellMembrane) + mat2gray (nucMembrane),[], [], GAMMA);
+overlayRGB (:,:,RED_CHANNEL) = imadjust (qdMIPGray);
+overlayRGB (:,:,BLUE_CHANNEL) = imadjust (qdMIPGray);
+overlayRGB (:,:,GREEN_CHANNEL) = imadjust (mat2gray (cellMembrane) + mat2gray (nucMembrane),[], [], GAMMA);
 imagesc (overlayRGB);
 
 %plot 2D contour plot over RGB image
@@ -61,3 +67,6 @@ set (hTextBox, 'String', strcat ('Number of QDs: ', {' '}, int2str (length (sele
 
 %plot 3D surface image
 plot2DProbDensityEst_3D (xCoord, yCoord, probDensity);
+
+end
+
