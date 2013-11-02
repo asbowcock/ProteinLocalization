@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Script:      kde2DVideoDriver
 % 
-% Version:     1.1
+% Version:     1.0
 %
 % Description: Creates a video of the two dimesional probabiliy density 
 %              estimate (PDE) of quantum dots in a cell. The video shows 
@@ -25,24 +25,23 @@ function kde2DVideoDriver(controller, goodSlices, cellNumber, fileName)
 FRAME_RATE = 1;
 VIDEO_QUALITY = 100;
 MIN_NUMBER_OF_QDS = 20;
-LOWER_BOUND = -1000000; %nanometers
+LOWER_BOUND = -1000; %nanometers
 UPPER_BOUND = 1000000; %nanometers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Initialize the video
 theVideo = VideoWriter (fileName);
 theVideo.Quality = VIDEO_QUALITY;
 theVideo.FrameRate = FRAME_RATE;
 open (theVideo);
 
-%Get the QDs to be analyzed
+
 goodQDs = findGoodQDs (controller, cellNumber);
 selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
 xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, goodQDs));
 
 for qdCount = MIN_NUMBER_OF_QDS:length (selectQDs)
 
-%Calculate the probability density estimate
+    
 [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:qdCount,:));
 
 %Parse the contour matrix in preparation for plotting the 2D contour plot
@@ -60,7 +59,7 @@ plotContourMap2D (separatedContourMatrix, numContours);
 %display number of QDs on 2D contour plot
 displayNumberQDs (qdCount);
 
-%capture current frame and write to the video
+%capture current frame and write to theVideo
 writeVideo (theVideo, getframe (gcf));
 close (gcf);
 end
