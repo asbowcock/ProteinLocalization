@@ -1,6 +1,21 @@
-function [selectedQDs] = selectQDsWithinRange(distQDtoMembrane, lowerBound, upperBound)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Script:      selectQDsWithinRange
+% 
+% Version:     1.0
+%
+% Description: Selects quantum dots based on their distance from the 
+%              
+%
+% Parameters:  controller - the controller object
+%              goodSlices - the good slices of the cell
+%              cellNumber - the particular cell containing the QDs
+%
+% Returned:    the RGB image
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-selectedQDs = find ()
+function [selectedQDs] = selectQDsWithinRange(qdDistance, lowerBound, upperBound)
+
+selectedQDs = find (qdDistance > lowerBound & qdDistance < upperBound);
 
 end
 

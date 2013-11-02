@@ -1,3 +1,18 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Function:    createRGBImageCellMemNucMemQD
+% 
+% Version:     1.0
+%
+% Description: Creates an RGB image of the cell membrane (green), of the
+%              nuclear membrane (green), and the quantum dots (magenta). 
+%
+% Parameters:  controller - the controller object
+%              goodSlices - the good slices of the cell
+%              cellNumber - the particular cell containing the QDs
+%
+% Returned:    the RGB image
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [rgbImage] = createRGBImageCellMemNucMemQD (controller, goodSlices, cellNumber)
 
 cellMembrane = controller.cellData{cellNumber}.data(:,:,floor (median (goodSlices{cellNumber})));

@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Script:      kde2DVideoDriver
+% Function:    kde2DVideoDriver
 % 
 % Version:     1.1
 %

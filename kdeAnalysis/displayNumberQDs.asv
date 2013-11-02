@@ -1,3 +1,18 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Script:      displayNumberQDs
+% 
+% Version:     1.0
+%
+% Description: Displays the number of quantum dots in the lower right 
+%              corner of the current figure.
+%
+% Parameters:  controller - the controller object
+%              goodSlices - the good slices of the cell
+%              cellNumber - the particular cell containing the QDs
+%
+% Returned:    the RGB image
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function displayNumberQDs(numQDs)
 
 hTextBox = annotation ('textbox', [NUM_QDS_X_POSITION, NUM_QDS_Y_POSITION, 0, 0]);
