@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Script:      kde2DDriver
+% Script:      kde2DVideoDriver
 % 
-% Version:     1.1
+% Version:     1.0
 %
 % Description: Calculates and displays the two dimensional probability
 %              density estimate for all identified quantum dots in a cell.
@@ -22,18 +22,23 @@ NUM_OF_DIMENSIONS = 3;
 GAMMA = 0.5;
 NUM_QDS_X_POSITION = 0.7;
 NUM_QDS_Y_POSITION = 0.07;
-LOWER_BOUND = -1000; %nanometers
-UPPER_BOUND = 1000000; %nanometers
+FRAME_RATE = 1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-cellNumber = 1;
+cellNumber = 2;
+
+theVideo = VideoWriter ('ZeroSecExp2Videos/ZeroSecExp2_1Cell2.avi');
+theVideo.Quality = 100;
+theVideo.FrameRate = FRAME_RATE;
+open (theVideo);
 
 %Calculate the probability density estimate
 goodQDs = findGoodQDs (controller, cellNumber);
-selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
-xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, selectQDs));
+xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, goodQDs));
 
-[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(:,:));
+for qdCount = 20:length (goodQDs)
+
+[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:qdCount,:));
 
 %Parse the contour matrix in preparation for plotting the 2D contour plot
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
@@ -57,7 +62,11 @@ plotContourMap2D (separatedContourMatrix, numContours);
 %display number of QDs on 2D contour plot
 hTextBox = annotation ('textbox', [NUM_QDS_X_POSITION, NUM_QDS_Y_POSITION, 0, 0]);
 set (hTextBox, 'FitBoxToText', 'on');
-set (hTextBox, 'String', strcat ('Number of QDs: ', {' '}, int2str (length (selectQDs))));
+set (hTextBox, 'String', strcat ('Number of QDs: ', {' '}, int2str (qdCount)));
 
-%plot 3D surface image
-plot2DProbDensityEst_3D (xCoord, yCoord, probDensity);
+%axis equal;
+writeVideo (theVideo, getframe (gcf));
+close (gcf);
+end
+
+close (theVideo);

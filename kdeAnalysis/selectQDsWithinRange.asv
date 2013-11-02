@@ -1,0 +1,6 @@
+function [selectedQDs] = selectQDsWithinRange(distQDtoMembrane, lowerBound, upperBound)
+
+selectedQDs = find ()
+
+end
+
