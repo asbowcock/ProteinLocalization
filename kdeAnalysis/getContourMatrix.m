@@ -16,7 +16,7 @@ function [ contourMatrix ] = getContourMatrix (xCoord, yCoord, probDensity)
 
 figure ('visible', 'off');
 
-contourMatrix = contour (xCoord, yCoord, probDensity);
+contourMatrix = contour (xCoord, yCoord, probDensity, NUM_CONTOURS);
 
 figure ('visible', 'on');
 

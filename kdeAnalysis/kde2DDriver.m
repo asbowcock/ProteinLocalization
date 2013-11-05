@@ -23,7 +23,7 @@
 function kde2DDriver(controller, goodSlices, cellNumber)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-LOWER_BOUND = -1000; %nanometers
+LOWER_BOUND = -1000000; %nanometers
 UPPER_BOUND = 1000000; %nanometers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
