@@ -34,6 +34,8 @@ xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, selectQ
 
 [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(:,:));
 
+%probDensity = normalizePDE (probDensity);
+
 %Parse the contour matrix in preparation for plotting the 2D contour plot
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 contourMatrix = contourMatrix';

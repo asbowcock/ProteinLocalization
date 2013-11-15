@@ -25,7 +25,7 @@ XY_COORDS_LOCATION = 3;
 NAVY_BLUE = [0, 0, 0.4000];
 ORANGE = [1.0000, 0.6000, 0.0];
 DARK_CYAN = [0, 0.8000, 1.0000];
-HUNTER_GREEN = [0, 0.6000, 0];
+AQUA = [0, 1.0000, 0.4941];
 TEAL = [0.2, 1.0, 0.6];
 LIME_GREEN = [0.6, 1.0, 0];
 DARK_RED = [0.6500, 0, 0];
@@ -49,7 +49,7 @@ for i = 1:numContours
     elseif (normContourValues(i) >= 0.2 && normContourValues(i) < 0.3)
             set (hPlot, 'Color', DARK_CYAN)
     elseif (normContourValues(i) >= 0.3 && normContourValues(i) < 0.4)
-            set (hPlot, 'Color', HUNTER_GREEN)
+            set (hPlot, 'Color', AQUA)
     elseif (normContourValues(i) >= 0.4 && normContourValues(i) < 0.5)
             set (hPlot, 'Color', 'green')
     elseif (normContourValues(i) >= 0.5 && normContourValues(i) < 0.6)
