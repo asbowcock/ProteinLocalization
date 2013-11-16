@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Function:    kde2DDriver
 % 
-% Version:     1.2
+% Version:     1.21
 %
 % Description: Calculates and displays the two dimensional probability
 %              density estimate for identified quantum dots in a cell.
@@ -23,7 +23,7 @@
 function kde2DDriver(controller, goodSlices, cellNumber)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-LOWER_BOUND = -1000000; %nanometers
+LOWER_BOUND = -1000; %nanometers
 UPPER_BOUND = 1000000; %nanometers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -33,8 +33,6 @@ selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQD
 xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, selectQDs));
 
 [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(:,:));
-
-%probDensity = normalizePDE (probDensity);
 
 %Parse the contour matrix in preparation for plotting the 2D contour plot
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
