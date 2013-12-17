@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Function:    kde2DVideoDriver
+% Function:    pde2DStabilityDriver
 % 
 % Version:     1.1
 %
@@ -19,7 +19,7 @@
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function kde2DVideoDriver(controller, goodSlices, cellNumber, fileName)
+function pde2DStabilityDriver (controller, goodSlices, cellNumber, fileName)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 FRAME_RATE = 1;
@@ -40,32 +40,49 @@ goodQDs = findGoodQDs (controller, cellNumber);
 selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
 xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, goodQDs));
 
+%Declare array for storing change in PDE
+prevPDE = 0;
+pdeChange = zeros (length (selectQDs) - MIN_NUMBER_OF_QDS + 1, 1);
+qdNumber = MIN_NUMBER_OF_QDS:length (selectQDs);
+
 for qdCount = MIN_NUMBER_OF_QDS:length (selectQDs)
 
 %Calculate the probability density estimate
 [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:qdCount,:));
 
+%Calculate change in PDE and store value
+pdeChange (qdCount - MIN_NUMBER_OF_QDS + 1) = calculatePDEChange (probDensity, prevPDE);
+prevPDE = probDensity;
+%{
 %Parse the contour matrix in preparation for plotting the 2D contour plot
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 contourMatrix = contourMatrix';
 [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
 
-%create and display RGB image of QD MIP, cell membrane, and nuclear membrane
+%Create and display RGB image of QD MIP, cell membrane, and nuclear membrane
 overlayRGB = createRGBImageCellMemNucMemQD (controller, goodSlices, cellNumber);
 imagesc (overlayRGB);
 
-%plot contour map of 2D PDE over RGB image
+%Plot contour map of 2D PDE over RGB image
 plotContourMap2D (separatedContourMatrix, numContours);
 
-%display number of QDs on 2D contour plot
+%Display number of QDs on 2D contour plot
 displayNumberQDs (qdCount);
 
-%capture current frame and write to the video
+%Capture current frame and write to the video
 writeVideo (theVideo, getframe (gcf));
 close (gcf);
+%}
 end
 
 close (theVideo);
+
+%Plot change in PDE
+figure;
+plot (qdNumber', pdeChange);
+xlabel ('Number of QDs');
+% use latex here
+ylabel ('Change in PDE');
 
 end
 

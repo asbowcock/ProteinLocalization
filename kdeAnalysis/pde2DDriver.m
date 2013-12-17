@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Function:    kde2DDriver
+% Function:    pde2DDriver
 % 
 % Version:     1.21
 %
@@ -20,7 +20,7 @@
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function kde2DDriver(controller, goodSlices, cellNumber)
+function pde2DDriver (controller, goodSlices, cellNumber)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 LOWER_BOUND = -1000; %nanometers
