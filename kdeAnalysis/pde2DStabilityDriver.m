@@ -30,9 +30,7 @@
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function pde2DStabilityDriver (outputVideoFile, outputGraphFile, ...
-                               matFileName, cellNumber, xyCoords, ...
-                               imageFile, overlayShift)
+function pde2DStabilityDriver (varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 FRAME_RATE = 1;
@@ -46,42 +44,28 @@ UPPER_BOUND = 1000000; %nanometers
 theInputParser = inputParser;
 theInputParser.addRequired ('outputVideoFile', @isstr);
 theInputParser.addRequired ('outputGraphFile', @isstr);
-theInputParser.addOptional ('matFileName', 0, @isstr);
-theInputParser.addOptional ('cellNumber', 0, @isscalar);
-theInputParser.addOptional ('xyCoords', [intmin, intmin]);
-theInputParser.addOptional ('imageFile', 0, @isstr);
-theInputParser.addOptional ('overlayShift', [0, 0]);
+theInputParser.addRequired ('inputData', @(x) ischar (x) || isnumeric (x));
+theInputParser.addParameter ('cellNumber', 1, @(x) isscalar (x) && (x > 0));
+theInputParser.addParameter ('imageFile', '', @isstr);
+theInputParser.addParameter ('overlayShift', [0, 0], @(x) isnumeric (x));
 
 % Parse input parameters
-
-theInputParser.parse (outputVideoFile, outputGraphFile, matFileName, ... 
-                      cellNumber, xyCoords, imageFile, ...
-                      overlayShift);
-
-% Check for valid input data
-if ((0 == matFileName) && (intmin == xyCoords))
-    error ('Error: must pass .mat file or 2D array of x,y-coordinates');
-end
+theInputParser.parse (varargin{:});
         
 % Initialize the video
-theVideo = VideoWriter (outputVideoFile);
+theVideo = VideoWriter (theInputParser.Results.outputVideoFile);
 theVideo.Quality = VIDEO_QUALITY;
 theVideo.FrameRate = FRAME_RATE;
 open (theVideo);
 
 % If .mat file has been passed in
-if (0 ~= matFileName && intmin == xyCoords)
+if (ischar (theInputParser.Results.inputData))
     
-    % Check for valid cell number
-    if (0 == cellNumber)
-        error ('Error: when passing .mat file, must pass a cell number greater than zero');
-    else
-        load (matFileName);
+    load (theInputParser.Results.inputData);
 
-        goodQDs = findGoodQDs (controller, cellNumber);
-        selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
-        xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, selectQDs));
-    end
+    goodQDs = findGoodQDs (controller, cellNumber);
+    selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
+    xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, selectQDs));
     
     % No image file passed in, so use image in controller class
     if (0 == imageFile)
