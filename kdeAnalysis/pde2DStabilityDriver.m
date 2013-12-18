@@ -30,7 +30,8 @@
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function pde2DStabilityDriver (varargin)
+function pde2DStabilityDriver (outputVideoFile, outputGraphFile, ...
+                               inputData, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 FRAME_RATE = 1;
@@ -42,15 +43,16 @@ UPPER_BOUND = 1000000; %nanometers
 
 % Initialize input parser
 theInputParser = inputParser;
-theInputParser.addRequired ('outputVideoFile', @isstr);
-theInputParser.addRequired ('outputGraphFile', @isstr);
+theInputParser.addRequired ('outputVideoFile', @ischar);
+theInputParser.addRequired ('outputGraphFile', @ischar);
 theInputParser.addRequired ('inputData', @(x) ischar (x) || isnumeric (x));
-theInputParser.addParameter ('cellNumber', 1, @(x) isscalar (x) && (x > 0));
-theInputParser.addParameter ('imageFile', '', @isstr);
-theInputParser.addParameter ('overlayShift', [0, 0], @(x) isnumeric (x));
+theInputParser.addParamValue ('cellNumber', 1, @(x) isscalar (x) && (x > 0));
+theInputParser.addParamValue ('imageFile', '', @ischar);
+theInputParser.addParamValue ('overlayShift', [0, 0], @(x) isnumeric (x));
 
 % Parse input parameters
-theInputParser.parse (varargin{:});
+theInputParser.parse (outputVideoFile, outputGraphFile, inputData, ...
+                      varargin{:});
         
 % Initialize the video
 theVideo = VideoWriter (theInputParser.Results.outputVideoFile);
@@ -63,23 +65,25 @@ if (ischar (theInputParser.Results.inputData))
     
     load (theInputParser.Results.inputData);
 
-    goodQDs = findGoodQDs (controller, cellNumber);
-    selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
-    xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, selectQDs));
+    goodQDs = findGoodQDs (controller, theInputParser.Results.cellNumber);
+    selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{theInputParser.Results.cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
+    xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, theInputParser.Results.cellNumber, selectQDs));
     
     % No image file passed in, so use image in controller class
-    if (0 == imageFile)
+    if (strcmp (theInputParser.Results.imageFile, ''))
         overlayRGB = createRGBImageCellMemNucMemQD (controller, ...
-                                                    goodSlices, cellNumber);
+                                                    goodSlices, theInputParser.Results.cellNumber);
     else
-        overlayRGB = imread (imageFile);
+        overlayRGB = imread (theInputParser.Results.imageFile);
     end
 % If array of x,y-coordinates has been passed in    
 else
-    if (0 == imageFile)
+    xyCoords = theInputParser.Results.inputData;
+    
+    if (strcmp (theInputParser.Results.imageFile, ''))
         error ('Error: when passing array of x,y-coordinates, must pass an image');
     else
-        overlayRGB = imread (imageFile);
+        overlayRGB = imread (theInputParser.Results.imageFile);
     end
 end
 
@@ -125,7 +129,7 @@ plot (qdNumber', pdeChange);
 xlabel ('Number of QDs');
 ylabel ('Change in PDE');
 
-% Print graph to file
+% Save graph to file
 print (hFig, '-dpng', outputGraphFile);
 
 end
