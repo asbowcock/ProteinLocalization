@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Function:    pde2DStabilityDriver
 % 
-% Version:     1.1
+% Version:     1.2
 %
 % Description: Creates a video of the two dimesional probabiliy density 
 %              estimate (PDE) of quantum dots in a cell. The video shows 
@@ -9,17 +9,30 @@
 %              the number of quantum dots used in calculating the PDE 
 %              increases. The contour plot is overlayed on an RGB image of 
 %              the cell membrane (green), of the nuclear membrane (green), 
-%              and of the QDs(magenta). 
+%              and of the QDs(magenta). A graph of the change in the PDE
+%              with respect to the number of QDs is also displayed.
 %
-% Parameters:  controller - the controller object
-%              goodSlices - the good slices of the cell
-%              cellNumber - the particular cell containing the QDs
-%              fileName   - the video file name
+% Parameters:  outputVideoFile - file name of the output video 
+%              outputGraphFile - file name of change in PDE graph
+%              matFileName     - the .mat file containing the controller 
+%                                class
+%              cellNumber      - the particular cell containing the probes
+%              xyCoords        - the x,y-coordinates of the probes
+%              imageFile       - the file name of the image that the PDE 
+%                                will be overlaid on
+%              overlayShift    - a 1-by-2 matrix that shifts the
+%                                x,y-coordinates of the PDE so the PDE
+%                                overlays with the appropriate section of
+%                                the image; the first element is the
+%                                x-coordinate shift; the second element is
+%                                the y-coordinate shift
 %
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function pde2DStabilityDriver (controller, goodSlices, cellNumber, fileName)
+function pde2DStabilityDriver (outputVideoFile, outputGraphFile, ...
+                               matFileName, cellNumber, xyCoords, ...
+                               imageFile, overlayShift)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 FRAME_RATE = 1;
@@ -29,60 +42,107 @@ LOWER_BOUND = -1000000; %nanometers
 UPPER_BOUND = 1000000; %nanometers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Initialize the video
-theVideo = VideoWriter (fileName);
+% Initialize input parser
+theInputParser = inputParser;
+theInputParser.addRequired ('outputVideoFile', @isstr);
+theInputParser.addRequired ('outputGraphFile', @isstr);
+theInputParser.addOptional ('matFileName', 0, @isstr);
+theInputParser.addOptional ('cellNumber', 0, @isscalar);
+theInputParser.addOptional ('xyCoords', [intmin, intmin]);
+theInputParser.addOptional ('imageFile', 0, @isstr);
+theInputParser.addOptional ('overlayShift', [0, 0]);
+
+% Parse input parameters
+
+theInputParser.parse (outputVideoFile, outputGraphFile, matFileName, ... 
+                      cellNumber, xyCoords, imageFile, ...
+                      overlayShift);
+
+% Check for valid input data
+if ((0 == matFileName) && (intmin == xyCoords))
+    error ('Error: must pass .mat file or 2D array of x,y-coordinates');
+end
+        
+% Initialize the video
+theVideo = VideoWriter (outputVideoFile);
 theVideo.Quality = VIDEO_QUALITY;
 theVideo.FrameRate = FRAME_RATE;
 open (theVideo);
 
-%Get the QDs to be analyzed
-goodQDs = findGoodQDs (controller, cellNumber);
-selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
-xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, goodQDs));
+% If .mat file has been passed in
+if (0 ~= matFileName && intmin == xyCoords)
+    
+    % Check for valid cell number
+    if (0 == cellNumber)
+        error ('Error: when passing .mat file, must pass a cell number greater than zero');
+    else
+        load (matFileName);
 
-%Declare array for storing change in PDE
+        goodQDs = findGoodQDs (controller, cellNumber);
+        selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
+        xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, cellNumber, selectQDs));
+    end
+    
+    % No image file passed in, so use image in controller class
+    if (0 == imageFile)
+        overlayRGB = createRGBImageCellMemNucMemQD (controller, ...
+                                                    goodSlices, cellNumber);
+    else
+        overlayRGB = imread (imageFile);
+    end
+% If array of x,y-coordinates has been passed in    
+else
+    if (0 == imageFile)
+        error ('Error: when passing array of x,y-coordinates, must pass an image');
+    else
+        overlayRGB = imread (imageFile);
+    end
+end
+
+% Declare array for storing change in PDE
 prevPDE = 0;
-pdeChange = zeros (length (selectQDs) - MIN_NUMBER_OF_QDS + 1, 1);
-qdNumber = MIN_NUMBER_OF_QDS:length (selectQDs);
+pdeChange = zeros (length (xyCoords) - MIN_NUMBER_OF_QDS + 1, 1);
+qdNumber = MIN_NUMBER_OF_QDS:length (xyCoords);
 
-for qdCount = MIN_NUMBER_OF_QDS:length (selectQDs)
+for qdCount = MIN_NUMBER_OF_QDS:length (xyCoords)
 
-%Calculate the probability density estimate
+% Calculate the probability density estimate
 [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:qdCount,:));
 
-%Calculate change in PDE and store value
+% Calculate change in PDE and store value
 pdeChange (qdCount - MIN_NUMBER_OF_QDS + 1) = calculatePDEChange (probDensity, prevPDE);
 prevPDE = probDensity;
-%{
-%Parse the contour matrix in preparation for plotting the 2D contour plot
+
+% Parse the contour matrix in preparation for plotting the 2D contour plot
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 contourMatrix = contourMatrix';
 [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
 
-%Create and display RGB image of QD MIP, cell membrane, and nuclear membrane
-overlayRGB = createRGBImageCellMemNucMemQD (controller, goodSlices, cellNumber);
+% Display RGB image
 imagesc (overlayRGB);
 
-%Plot contour map of 2D PDE over RGB image
+% Plot contour map of 2D PDE over RGB image
 plotContourMap2D (separatedContourMatrix, numContours);
 
-%Display number of QDs on 2D contour plot
+% Display number of QDs on 2D contour plot
 displayNumberQDs (qdCount);
 
-%Capture current frame and write to the video
+% Capture current frame and write to the video
 writeVideo (theVideo, getframe (gcf));
 close (gcf);
-%}
+
 end
 
 close (theVideo);
 
-%Plot change in PDE
-figure;
+% Plot change in PDE
+hFig = figure;
 plot (qdNumber', pdeChange);
 xlabel ('Number of QDs');
-% use latex here
 ylabel ('Change in PDE');
+
+% Print graph to file
+print (hFig, '-dpng', outputGraphFile);
 
 end
 
