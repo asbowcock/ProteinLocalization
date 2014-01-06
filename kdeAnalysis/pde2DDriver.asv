@@ -20,7 +20,7 @@
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function pde2DDriver (inputData, varargin)
+function pde2DDriver (controller, goodSlices, cellNumber)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 LOWER_BOUND = -1000; %nanometers
