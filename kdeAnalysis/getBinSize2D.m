@@ -1,7 +1,10 @@
-function [binSize2D] = getBinSize2D (pde)
+function [binSize2D] = getBinSize2D (xCoord, yCoord)
 
-binSize2D (1) = getBinSize (pde (1,:));
-binSize2D (2) = getBinSize (pde (:,1));
+X_COORD = 1;
+Y_COORD = 2;
+
+binSize2D (X_COORD) = getBinSize (xCoord);
+binSize2D (Y_COORD) = getBinSize (yCoord);
 
 end
 

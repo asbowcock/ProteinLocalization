@@ -19,7 +19,8 @@ function [mse, sumPDEDiffSquared] = calculateMSE (currentPDE, prevPDE, ...
                                                   probeCount, ...
                                                   sumPDEDiffSquared)
 
-sumPDEDiffSquared = sumPDEDiffSquared + sum (sum ((currentPDE - prevPDE).^2)); 
+sumPDEDiffSquared = sumPDEDiffSquared ...
+                    + sum (sum ((currentPDE - prevPDE).^2)); 
 
 mse = 1 / probeCount * sumPDEDiffSquared;
 

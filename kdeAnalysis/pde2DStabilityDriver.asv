@@ -46,6 +46,12 @@ theInputParser = inputParser;
 theInputParser = initializeInputParser (theInputParser);
 theInputParser.parse (outputVideoFile, outputGraphFile, inputData, ...
                       varargin{:});
+        
+% Initialize the video
+theVideo = VideoWriter (theInputParser.Results.outputVideoFile);
+theVideo.Quality = VIDEO_QUALITY;
+theVideo.FrameRate = FRAME_RATE;
+open (theVideo);
 
 % If .mat file has been passed in
 if (ischar (theInputParser.Results.inputData))
@@ -76,12 +82,6 @@ else
     end
 end
 
-% Initialize the video
-theVideo = VideoWriter (theInputParser.Results.outputVideoFile);
-theVideo.Quality = VIDEO_QUALITY;
-theVideo.FrameRate = FRAME_RATE;
-open (theVideo);
-
 % Declare array for storing change in PDE
 sumPDEDiffSquared = 0;
 prevPDE = 0;
@@ -94,8 +94,10 @@ for qdCount = MIN_NUMBER_OF_QDS:length (xyCoords)
 [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:qdCount,:));
 
 % Plot PDE over RGB image and write to video
-xCoord = xCoord + theInputParser.Results.overlayShift(1);
-yCoord = yCoord + theInputParser.Results.overlayShift(2); 
+
+% need to include translation of xCoord and yCoord
+% xCoord = xCoord + resizeParameters(1);
+% yCoord = yCoord + resizeParameters(2); 
 
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 contourMatrix = contourMatrix';

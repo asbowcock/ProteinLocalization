@@ -1,8 +1,15 @@
-function [binSize] = getBinSize (xCoord, yCoord)
+function [binSize] = getBinSize (coordVector)
 
-binSize = zeros (1,2);
-binSize (1) = xCoord (1, 1) - xCoord (1, 2);
-binSize (2) = yCoord (1, 1) - yCoord (2, 1);
- 
+index = randsample (length (coordVector), 1);
+
+if abs (coordVector (1) - coordVector (2)) ...
+    == abs (coordVector (1) - coordVector (index))
+
+    binSize = abs (coordVector (1) - coordVector (2));
+    
+else
+    error ('Error: variable bin size');
+end
+
 end
 
