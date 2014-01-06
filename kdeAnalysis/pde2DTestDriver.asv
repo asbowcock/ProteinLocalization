@@ -57,11 +57,6 @@ pde2DDriver (dataFile, contourPlotFile, plot3DFile, matFile, 'image', imageFile)
 disp ('SUCCESS: Test Case: .MAT file w/ external image');
 
 %}
-
-% pass .mat file and external image
-
-% pass .mat file and external image with shift
-
 % pass array w/o image
 matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\Exp5_1 test.mat';
 dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,SuperQDExp5_1';
@@ -81,31 +76,19 @@ catch error
     end
 end
 
+clear;
+
 % pass array w/ image
 matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\Exp5_1 test.mat';
-dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,Shift,SuperQDExp5_1.mat';
-contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,SuperQDExp5_1Cell1,Contour.fig';
-plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,SuperQDExp5_1Cell1,Plot3D.fig';
+dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ZeroSecExp5_1';
+contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,SuperQDExp5_1Cell1.avi';
+plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,SuperQDExp5_1Cell1.png';
 imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\testexp5-1 reference.tif';
 
 load (matFile);
 data = getXYCoords (controller.dataQD{1}{1}.SuperQD);
 
-pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'image', imageFile);
+pde2DStabilityDriver (contourPlotFile, plot3DFile, data, 'image', imageFile);
 disp ('SUCCESS: Test Case: Array w/ image');
-
-% pass array w/ image and shift
-matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\Exp5_1 test.mat';
-dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,Shift,SuperQDExp5_1.mat';
-contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,Shift,SuperQDExp5_1Cell1,Contour.fig';
-plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,Shift,SuperQDExp5_1Cell1,Plot3D.fig';
-imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\testexp5-1 reference.tif';
-
-load (matFile);
-data = getXYCoords (controller.dataQD{1}{1}.SuperQD);
-overlayShift = controller.maskBox{1}.getPosition;
-
-pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'image', imageFile, 'overlayShift', overlayShift);
-disp ('SUCCESS: Test Case: Array w/ image and shift');
 
 clear;

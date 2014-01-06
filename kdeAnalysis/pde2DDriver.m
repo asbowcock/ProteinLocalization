@@ -20,7 +20,8 @@
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function pde2DDriver (inputData, varargin)
+function pde2DDriver (outputPDEDataFile, outputContourPlotFile, ...
+                      output3DPlotFile, inputData, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 LOWER_BOUND = -1000; %nanometers
@@ -30,7 +31,8 @@ UPPER_BOUND = 1000000; %nanometers
 % Initialize input parser
 theInputParser = inputParser;
 theInputParser = initializeInputParser (theInputParser);
-theInputParser.parse (inputData, varargin{:});
+theInputParser.parse (outputPDEDataFile, outputContourPlotFile, ...
+                      output3DPlotFile, inputData, varargin{:});
 
 % If .mat file has been passed in
 if (ischar (theInputParser.Results.inputData))
@@ -62,20 +64,28 @@ else
 end
 
 %Calculate the probability density estimate
-[bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords);
+[bandwidth, pde, xCoord, yCoord] = kde2d (xyCoords);
+
+xCoord = xCoord + theInputParser.Results.overlayShift(1);
+yCoord = yCoord + theInputParser.Results.overlayShift(2); 
 
 %Parse the contour matrix in preparation for plotting the 2D contour plot
-contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
+contourMatrix = getContourMatrix (xCoord, yCoord, pde);
 contourMatrix = contourMatrix';
 [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
 
 imagesc (overlayRGB);
 
 plotContourMap2D (separatedContourMatrix, numContours);
+displayNumberQDs (length (xyCoords));
+saveas (gcf, theInputParser.Results.outputContourPlotFile);
+close (gcf);
 
-displayNumberQDs (length (selectQDs));
+plot2DProbDensityEst_3D (xCoord, yCoord, pde);
+saveas (gcf, theInputParser.Results.output3DPlotFile);
+close (gcf);
 
-plot2DProbDensityEst_3D (xCoord, yCoord, probDensity);
+save (theInputParser.Results.outputPDEDataFile, 'pde');
 
 end
 
@@ -91,6 +101,9 @@ end
 
 function [theInputParser] = initializeInputParser (theInputParser)
 
+theInputParser.addRequired ('outputPDEDataFile', @ischar);
+theInputParser.addRequired ('outputContourPlotFile', @ischar);
+theInputParser.addRequired ('output3DPlotFile', @ischar);
 theInputParser.addRequired ('inputData', @(x) ischar (x) || isnumeric (x));
 theInputParser.addParamValue ('cellNumber', 1, ...
                               @(x) isscalar (x) && (x > 0));
