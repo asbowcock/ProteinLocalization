@@ -107,15 +107,12 @@ disp ('SUCCESS: Test Case: Array w/ image and shift');
 
 % pass data from normally distributed pseudorandom generator
 
-
-dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/probabilityTest,10dp,10by10.mat';
-contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/probabilityTestContour,10dp,10by10.fig';
-plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/probabilityTest3D,10dp,10by10.fig';
-imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\ZeroSecExp2Videos\pde2DDriverTests\probabilityEmptyImage.png';
+matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\Exp5_1 test.mat';
+dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,Shift,SuperQDExp5_1.mat';
+contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,Shift,SuperQDExp5_1Cell1,Contour.fig';
+plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/array,ExternalIm,Shift,SuperQDExp5_1Cell1,Plot3D.fig';
+imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\testexp5-1 reference.tif';
 
 xyCoords = randn (10);
-regionSize = 256;
-pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'image', imageFile, 'regionSize', regionSize);
-disp ('SUCCESS: Test Case: Probability');
 
 clear;

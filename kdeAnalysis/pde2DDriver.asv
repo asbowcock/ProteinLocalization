@@ -85,12 +85,8 @@ plot2DProbDensityEst_3D (xCoord, yCoord, pde);
 saveas (gcf, theInputParser.Results.output3DPlotFile);
 close (gcf);
 
-probability = getProbability (xCoord, yCoord, pde, ...
-                              theInputParser.Results.regionSize);
-
 save (theInputParser.Results.outputPDEDataFile, 'pde', 'xCoord', ...
-                                                'yCoord', 'bandwidth', ...
-                                                'probability');
+                                                'yCoord', 'bandwidth');
 
 end
 
@@ -115,7 +111,7 @@ theInputParser.addParamValue ('cellNumber', 1, ...
 theInputParser.addParamValue ('image', '', @ischar);
 theInputParser.addParamValue ('overlayShift', [0, 0], @(x) isnumeric (x));
 theInputParser.addParamValue ('regionSize', REGION_SIZE, ...
-                              @(x) isscalar (x));
+                              @(x) isscalar (x) && isa (x, 'integer'));
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -135,7 +131,7 @@ end
 
 function [probability] = getProbability (xCoord, yCoord, pde, regionSize)
 
-binSizes = getBinSize2D (xCoord(1,:), yCoord(:,1));
+binSizes = getBinSize2D (xCoord, yCoord);
 
 [col, row] = getMaxPDEIndices (pde);
 
@@ -171,23 +167,24 @@ end
 %
 % Description: Returns the 
 %
-% Parameters:  pde        - the probability density values
-%              colMaxPDE  - the column of the max PDE value 
-%              rowMaxPDE  - the row of the max PDE value
-%              regionSize - the size of the region that the probability
+% Parameters:  pde         - the probability density values
+%              xCoordIndex - 
+%              yCoordIndex - 
+%              regionSize  - the size of the region that the probability
 %                            will be calculated for
 %
 % Returned:    the probability for the region around the maximum PDE value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [maxPDERegion] = getMaxPDERegion (pde, colMaxPDE, rowMaxPDE, regionSize)
+function [maxPDERegion] = getMaxPDERegion (pde, col, ...
+                                           row, regionSize)
 
 maxPDERegion = zeros(regionSize, regionSize);
 
 for row = 1:regionSize
     for col = 1:regionSize
-        maxPDERegion(row, col) = pde (rowMaxPDE - regionSize / 2 + ...
-                                     (row - 1), colMaxPDE - regionSize / ...
+        maxPDERegion(row, col) = pde (row - regionSize / 2 + ...
+                                     (row - 1), col - regionSize / ...
                                       2 + (col - 1));
     end
 end
