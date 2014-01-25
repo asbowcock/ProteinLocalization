@@ -113,3 +113,35 @@ theInputParser.addParamValue ('overlayShift', [0, 0], @(x) isnumeric (x));
 theInputParser.addParamValue ('regionSize', REGION_SIZE, ...
                               @(x) isscalar (x) && isa (x, 'integer'));
 end
+
+function [probability] = getProbability (xCoord, yCoord, pde, regionSize)
+
+binSizes = getBinSize2D (xCoord, yCoord);
+
+[xCoordIndex, yCoordIndex] = getMaxPDEIndices (pde);
+
+end
+
+function [xCoordIndex, yCoordIndex] = getMaxPDEIndices (pde)
+
+[maxValuesYDirection, yCoordIndices] = max (pde);
+
+[maxValue, xCoordIndex] = max (maxValuesYDirection);
+
+yCoordIndex = yCoordIndices (xCoordIndex);
+
+end
+
+function [maxPDERegion] = getMaxPDERegion (pde, xCoordIndex, yCoordIndex, regionSize)
+
+maxPDERegion = zeros(regionSize, regionSize);
+
+for i = (yCoordIndex - regionSize / 2):(yCoordIndex + regionSize / 2)
+   for j = (xCoordIndex - regionSize / 2):(xCoordIndex + regionSize / 2)
+       maxPDERegion()()
+   
+   end 
+end
+
+end
+ 
