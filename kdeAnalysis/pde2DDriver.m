@@ -63,13 +63,13 @@ else
     end
 end
 
-%Calculate the probability density estimate
+% Calculate the probability density estimate
 [bandwidth, pde, xCoord, yCoord] = kde2d (xyCoords);
 
 xCoord = xCoord + theInputParser.Results.overlayShift(1);
 yCoord = yCoord + theInputParser.Results.overlayShift(2); 
 
-%Parse the contour matrix in preparation for plotting the 2D contour plot
+% Parse the contour matrix in preparation for plotting the 2D contour plot
 contourMatrix = getContourMatrix (xCoord, yCoord, pde);
 contourMatrix = contourMatrix';
 [separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
@@ -85,7 +85,8 @@ plot2DProbDensityEst_3D (xCoord, yCoord, pde);
 saveas (gcf, theInputParser.Results.output3DPlotFile);
 close (gcf);
 
-save (theInputParser.Results.outputPDEDataFile, 'pde');
+save (theInputParser.Results.outputPDEDataFile, 'pde', 'xCoord', ...
+                                                'yCoord', 'bandwidth');
 
 end
 

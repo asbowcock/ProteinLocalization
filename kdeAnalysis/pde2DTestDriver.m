@@ -30,7 +30,7 @@ catch error
     end
 end
 
-%{
+
 % pass .mat file and use internal image
 dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell1.mat';
 contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell1Contour.fig';
@@ -47,7 +47,8 @@ plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, matFile, 'cellNumber', 2);
 disp ('SUCCESS: Test Case: .MAT file w/ internal image & specified cell number');
 
-% pass .mat file and use internal image and select cell number
+%{
+% pass .mat file and use external image
 dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,ExternalIm,ZeroSecExp5_8Cell1';
 contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,ExternalIm,ZeroSecExp5_8Cell1,Contour.fig';
 plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,ExternalIm,ZeroSecExp5_8Cell1,3DPlot.fig';
@@ -55,11 +56,7 @@ imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\ZeroSecExp2Video
 
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, matFile, 'image', imageFile);
 disp ('SUCCESS: Test Case: .MAT file w/ external image');
-
 %}
-
-% pass .mat file and external image
-
 % pass .mat file and external image with shift
 
 % pass array w/o image

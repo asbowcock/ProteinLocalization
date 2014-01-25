@@ -5,8 +5,9 @@
 %
 % Parameters:  probability - the x-coordinates of the QDs 
 %              binSize     - a vector containing the bin size for the
-%              x-direction (stored as the first element) and for the
-%              y-direction (stored as the second element)
+%                            x-direction (stored as the first element) and 
+%                            for the y-direction (stored as the second 
+%                            element)
 %          
 % Returned:    the probability
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

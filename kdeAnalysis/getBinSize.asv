@@ -1,8 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Method:      getBinSize
 %
-% Description: Gets the bin size (change in coordinate value) for the
-%              passed in coordinate vector 
+% Description: Gets the 
 %
 % Parameters:  coordVector - a vector of coordinate values 
 %          
