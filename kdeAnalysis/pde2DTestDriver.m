@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Function:    pde2DTestDriver
+%
+% Description: Tests the function pde2DDriver
+%
+% Parameters:  None
+%
+% Returned:    None
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\Exp5_8 cell1 cell2 cell3 cell4 cell5 cell6 cell7.mat';
 
 % no data
@@ -105,15 +115,15 @@ overlayShift = controller.maskBox{1}.getPosition;
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'image', imageFile, 'overlayShift', overlayShift);
 disp ('SUCCESS: Test Case: Array w/ image and shift');
 
-% pass data from normally distributed pseudorandom generator
-
+% pass data from normally distributed pseudorandom generator and integrate 
+% over entire array of PDE values; should acquire approximately 1
 
 dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/probabilityTest,10dp,10by10.mat';
 contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/probabilityTestContour,10dp,10by10.fig';
 plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/probabilityTest3D,10dp,10by10.fig';
 imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\ZeroSecExp2Videos\pde2DDriverTests\probabilityEmptyImage.png';
 
-xyCoords = randn (10);
+data = randn (20, 2);
 regionSize = 256;
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'image', imageFile, 'regionSize', regionSize);
 disp ('SUCCESS: Test Case: Probability');

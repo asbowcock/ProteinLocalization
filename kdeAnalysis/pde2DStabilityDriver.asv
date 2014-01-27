@@ -32,8 +32,7 @@
 %                                overlays with the appropriate section of
 %                                the image; the first element is the
 %                                x-coordinate shift; the second element is
-%                                the y-coordinate shift; the default is 
-%                                [0,0]
+%                                the y-coordinate shift; t
 %
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

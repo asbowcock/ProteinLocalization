@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Function:    pde2DStabilityTestDriver
+%
+% Description: Tests the function pde2DStabilityDriver
+%
+% Parameters:  None
+%
+% Returned:    None
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\Exp5_8 cell1 cell2 cell3 cell4 cell5 cell6 cell7.mat';
 
 % no data
