@@ -15,7 +15,7 @@ function [binSize] = getBinSize (coordVector)
 %epsilon value for safe comparison because values are floating point
 EPSILON = 0.000001; 
 
-index = randsample (numel (coordVector), 1);
+index = randsample (numel (coordVector) - 1, 1);
 diff1 = abs (coordVector(1) - coordVector(2));
 diff2 = abs (coordVector(index) - coordVector(index + 1));
 

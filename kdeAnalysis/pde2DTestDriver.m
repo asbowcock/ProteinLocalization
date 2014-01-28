@@ -98,7 +98,7 @@ imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\testexp5
 load (matFile);
 data = getXYCoords (controller.dataQD{1}{1}.SuperQD);
 
-pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'image', imageFile);
+pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'imageFile', imageFile);
 disp ('SUCCESS: Test Case: Array w/ image');
 
 % pass array w/ image and shift
@@ -112,7 +112,7 @@ load (matFile);
 data = getXYCoords (controller.dataQD{1}{1}.SuperQD);
 overlayShift = controller.maskBox{1}.getPosition;
 
-pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'image', imageFile, 'overlayShift', overlayShift);
+pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'imageFile', imageFile, 'overlayShift', overlayShift);
 disp ('SUCCESS: Test Case: Array w/ image and shift');
 
 % pass data from normally distributed pseudorandom generator and integrate 
@@ -125,7 +125,7 @@ imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\ZeroSecExp2Video
 
 data = randn (20, 2);
 regionSize = 256;
-pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'image', imageFile, 'regionSize', regionSize);
+pde2DDriver (dataFile, contourPlotFile, plot3DFile, data, 'imageFile', imageFile, 'regionSize', regionSize);
 disp ('SUCCESS: Test Case: Probability');
 
 clear;

@@ -17,6 +17,17 @@
 %              is saved to a .mat file. The contour plot and 3D surface
 %              plot are also saved to image files.
 %
+%              Example:
+%              outputPDEDataFile = 'C:\Users\Person\Desktop\data';
+%              outputContourPlotFile =
+%                                'C:\Users\Person\Desktop\contourPlot.fig';
+%              output3DPlotFile = 'C:\Users\Person\Desktop\threeDPlot.fig';
+%              inputData = randn (50, 2);
+%              imageFile = 'C:\Users\Person\Desktop\overlayImage.tif';
+%
+%              pde2DDriver (outputPDEDataFile, outputContourPlotFile,
+%              output3DPlotFile, inputData, 'imageFile', imageFile);
+%
 % Parameters:  outputPDEDataFile     - the file name where the PDE values,
 %                                      x-coordiantes, y-coordinates, and 
 %                                      the probability value will be saved
@@ -30,12 +41,12 @@
 % 
 % Optional Parameters: in this function call, after entering the above 
 %                      arguments, enter parameter name as string followed 
-%                      by a comma and then the value; e.g. 'cellNumber', 2
+%                      by a comma and then the value; see the example above
 %              
 %              cellNumber   - for use when passing .mat file with more than 
 %                             one cell's data; the particular cell data to 
 %                             use; the default is 1
-%              image        - the overlay image
+%              imageFile    - the file name of the overlay image
 %              overlayShift - a 1-by-2 matrix that shifts the
 %                             x,y-coordinates of the PDE so the PDE
 %                             overlays with the appropriate section of
@@ -70,26 +81,28 @@ if (ischar (theInputParser.Results.inputData))
     load (theInputParser.Results.inputData);
 
     goodQDs = findGoodQDs (controller, theInputParser.Results.cellNumber);
-    selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{theInputParser.Results.cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
+    selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{...
+        theInputParser.Results.cellNumber}(goodQDs), ...
+        LOWER_BOUND, UPPER_BOUND);
     xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, ...
                             theInputParser.Results.cellNumber, selectQDs));
     
     % No image file passed in, so use image in controller class
-    if (strcmp (theInputParser.Results.image, ''))
+    if (strcmp (theInputParser.Results.imageFile, ''))
         overlayRGB = createRGBImageCellMemNucMemQD (controller, ...
                                                     goodSlices, ...
                                         theInputParser.Results.cellNumber);
     else
-        overlayRGB = imread (theInputParser.Results.image);
+        overlayRGB = imread (theInputParser.Results.imageFile);
     end
 % If array of x,y-coordinates has been passed in    
 else
     xyCoords = theInputParser.Results.inputData;
     
-    if (strcmp (theInputParser.Results.image, ''))
+    if (strcmp (theInputParser.Results.imageFile, ''))
         error ('Error: when passing array of x,y-coordinates, must pass an image');
     else
-        overlayRGB = imread (theInputParser.Results.image);
+        overlayRGB = imread (theInputParser.Results.imageFile);
     end
 end
 
@@ -102,7 +115,8 @@ yCoord = yCoord + theInputParser.Results.overlayShift(2);
 % Parse the contour matrix in preparation for plotting the 2D contour plot
 contourMatrix = getContourMatrix (xCoord, yCoord, pde);
 contourMatrix = contourMatrix';
-[separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
+[separatedContourMatrix, numContours] = separateContourMatrix (...
+                                                            contourMatrix);
 
 imagesc (overlayRGB);
 
@@ -142,7 +156,7 @@ theInputParser.addRequired ('output3DPlotFile', @ischar);
 theInputParser.addRequired ('inputData', @(x) ischar (x) || isnumeric (x));
 theInputParser.addParamValue ('cellNumber', 1, ...
                               @(x) isscalar (x) && (x > 0));
-theInputParser.addParamValue ('image', '', @ischar);
+theInputParser.addParamValue ('imageFile', '', @ischar);
 theInputParser.addParamValue ('overlayShift', [0, 0], @(x) isnumeric (x));
 theInputParser.addParamValue ('regionSize', REGION_SIZE, ...
                               @(x) isscalar (x));

@@ -61,26 +61,28 @@ if (ischar (theInputParser.Results.inputData))
     load (theInputParser.Results.inputData);
 
     goodQDs = findGoodQDs (controller, theInputParser.Results.cellNumber);
-    selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{theInputParser.Results.cellNumber}(goodQDs), LOWER_BOUND, UPPER_BOUND);
+    selectQDs = selectQDsWithinRange (controller.distQDtoMembrane{...
+                           theInputParser.Results.cellNumber}(goodQDs), ...
+                           LOWER_BOUND, UPPER_BOUND);
     xyCoords = getXYCoords (getSelectedQDsXYZCoords (controller, ...
                             theInputParser.Results.cellNumber, selectQDs));
     
     % No image file passed in, so use image in controller class
-    if (strcmp (theInputParser.Results.image, ''))
+    if (strcmp (theInputParser.Results.imageFile, ''))
         overlayRGB = createRGBImageCellMemNucMemQD (controller, ...
                                                     goodSlices, ...
                                         theInputParser.Results.cellNumber);
     else
-        overlayRGB = imread (theInputParser.Results.image);
+        overlayRGB = imread (theInputParser.Results.imageFile);
     end
 % If array of x,y-coordinates has been passed in    
 else
     xyCoords = theInputParser.Results.inputData;
     
-    if (strcmp (theInputParser.Results.image, ''))
+    if (strcmp (theInputParser.Results.imageFile, ''))
         error ('Error: when passing array of x,y-coordinates, must pass an image');
     else
-        overlayRGB = imread (theInputParser.Results.image);
+        overlayRGB = imread (theInputParser.Results.imageFile);
     end
 end
 
@@ -107,7 +109,8 @@ yCoord = yCoord + theInputParser.Results.overlayShift(2);
 
 contourMatrix = getContourMatrix (xCoord, yCoord, probDensity);
 contourMatrix = contourMatrix';
-[separatedContourMatrix, numContours] = separateContourMatrix (contourMatrix);
+[separatedContourMatrix, numContours] = separateContourMatrix (...
+                                                            contourMatrix);
 
 imagesc (overlayRGB);
 
@@ -152,7 +155,7 @@ theInputParser.addRequired ('outputGraphFile', @ischar);
 theInputParser.addRequired ('inputData', @(x) ischar (x) || isnumeric (x));
 theInputParser.addParamValue ('cellNumber', 1, ...
                               @(x) isscalar (x) && (x > 0));
-theInputParser.addParamValue ('image', '', @ischar);
+theInputParser.addParamValue ('imageFile', '', @ischar);
 theInputParser.addParamValue ('overlayShift', [0, 0], @(x) isnumeric (x));
 
 end

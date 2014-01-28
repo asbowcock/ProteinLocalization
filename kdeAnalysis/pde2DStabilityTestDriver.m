@@ -38,7 +38,7 @@ catch error
     end
 end
 
-%{
+
 % pass .mat file and use internal image
 vidFile = 'ZeroSecExp2Videos/pde2DStabilityDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell1.avi';
 graphFile = 'ZeroSecExp2Videos/pde2DStabilityDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell1.png';
@@ -46,7 +46,7 @@ graphFile = 'ZeroSecExp2Videos/pde2DStabilityDriverTests/matFile,InternalIm,Zero
 pde2DStabilityDriver (vidFile, graphFile, matFile);
 disp ('SUCCESS: Test Case: .MAT file w/ internal image');
 
-title ('Zero Sec Exp. 5_8 Cell 1');
+title ('Zero Sec Exp. 5,8 Cell 1');
 close (gcf);
 
 % pass .mat file and use internal image and select cell number
@@ -56,10 +56,10 @@ graphFile = 'ZeroSecExp2Videos/pde2DStabilityDriverTests/matFile,InternalIm,Zero
 pde2DStabilityDriver (vidFile, graphFile, matFile, 'cellNumber', 2);
 disp ('SUCCESS: Test Case: .MAT file w/ internal image & specified cell number');
 
-title ('Zero Sec Exp. 5_8 Cell 2');
+title ('Zero Sec Exp. 5,8 Cell 2');
 close (gcf);
 
-%}
+
 %{
 % pass .mat file and use external image
 matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\Exp 2 0sec result\Exp2_1 cell1 cell2.mat';
@@ -82,7 +82,7 @@ disp ('SUCCESS: Test Case: .MAT file w/ external image and overlay shift');
 
 title ('Super QD Exp. 5_1');
 close (gcf);
-%}
+
 
 % pass array w/o image
 matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\Exp5_1 test.mat';
@@ -113,11 +113,11 @@ imageFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\SuperQD\testexp5
 load (matFile);
 data = getXYCoords (controller.dataQD{1}{1}.SuperQD);
 
-pde2DStabilityDriver (vidFile, graphFile, data, 'image', imageFile);
+pde2DStabilityDriver (vidFile, graphFile, data, 'imageFile', imageFile);
 disp ('SUCCESS: Test Case: Array w/ image');
 
 clear;
-%{
+
 % pass array w/ image and overlay shift
 vidFile = 'ZeroSecExp2Videos/pde2DStabilityDriverTests/array,ExternalIm,Shift,SuperQDExp2_1Cell1.avi';
 graphFile = 'ZeroSecExp2Videos/pde2DStabilityDriverTests/array,ExternalIm,Shift,SuperQDExp2_1Cell1.png';
