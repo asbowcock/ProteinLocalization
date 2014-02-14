@@ -134,7 +134,7 @@ end
 close (theVideo);
 
 hFig = plotPDEChange (probeNumber, pdeChange);
-print (hFig, '-dpng', theInputParser.Results.outputGraphFile);
+saveas (hFig, theInputParser.Results.outputGraphFile);
 
 end
 

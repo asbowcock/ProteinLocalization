@@ -75,6 +75,8 @@ theInputParser = initializeInputParser (theInputParser);
 theInputParser.parse (outputPDEDataFile, outputContourPlotFile, ...
                       output3DPlotFile, inputData, varargin{:});
 
+bHasImage = true;
+                  
 % If .mat file has been passed in
 if (ischar (theInputParser.Results.inputData))
     
@@ -100,7 +102,7 @@ else
     xyCoords = theInputParser.Results.inputData;
     
     if (strcmp (theInputParser.Results.imageFile, ''))
-        error ('Error: when passing array of x,y-coordinates, must pass an image');
+        bHasImage = false;
     else
         overlayRGB = imread (theInputParser.Results.imageFile);
     end
@@ -117,8 +119,9 @@ contourMatrix = getContourMatrix (xCoord, yCoord, pde);
 contourMatrix = contourMatrix';
 [separatedContourMatrix, numContours] = separateContourMatrix (...
                                                             contourMatrix);
-
-imagesc (overlayRGB);
+if (bHasImage)
+    imagesc (overlayRGB);
+end
 
 plotContourMap2D (separatedContourMatrix, numContours);
 displayNumberQDs (length (xyCoords));
