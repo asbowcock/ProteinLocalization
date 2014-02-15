@@ -124,11 +124,13 @@ if (bHasImage)
 end
 
 plotContourMap2D (separatedContourMatrix, numContours);
-displayNumberQDs (length (xyCoords));
+%displayNumberQDs (length (xyCoords));
+set (gca, 'fontsize', 15);
 saveas (gcf, theInputParser.Results.outputContourPlotFile);
 close (gcf);
 
 plot2DProbDensityEst_3D (xCoord, yCoord, pde);
+set (gca, 'fontsize', 15);
 saveas (gcf, theInputParser.Results.output3DPlotFile);
 close (gcf);
 

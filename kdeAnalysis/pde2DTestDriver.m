@@ -8,7 +8,7 @@
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-matFile = 'C:\Users\Alec\Documents\MATLAB\ProteinLocalization\Exp5_8 cell1 cell2 cell3 cell4 cell5 cell6 cell7.mat';
+matFile = 'PracticeData/Exp5_8 cell1 cell2 cell3 cell4 cell5 cell6 cell7.mat';
 
 % no data
 dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/noData';
@@ -42,9 +42,9 @@ end
 
 
 % pass .mat file and use internal image
-dataFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell1.mat';
-contourPlotFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell1Contour.fig';
-plot3DFile = 'ZeroSecExp2Videos/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell13DPlot.fig';
+dataFile = 'TestCaseResults/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell1.mat';
+contourPlotFile = 'TestCaseResults/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell1Contour.fig';
+plot3DFile = 'TestCaseResults/pde2DDriverTests/matFile,InternalIm,ZeroSecExp5_8Cell13DPlot.fig';
 
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, matFile);
 disp ('SUCCESS: Test Case: .MAT file w/ internal image');

@@ -1,12 +1,16 @@
 % norm distribution, 100 data points
 
 dataFile = 'TestCaseResults/Validation/NormalDistribution/normDist,100dp.mat';
-contourPlotFile = 'TestCaseResults/Validation/NormalDistribution/normDist,100dp,contour.fig';
+contourPlotFile = 'TestCaseResults/Validation/NormalDistribution/normDist,100dp,contour';
 plot3DFile = 'TestCaseResults/Validation/NormalDistribution/normDist,100dp,3DPlot.fig';
 
 data = randn (100, 2);
 regionSize = 256;
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
+
+hFig = hgload (contourPlotFile);
+print (hFig, '-dpng', contourPlotFile);
+close gcf;
 
 % norm distribution, 1000 data points
 
@@ -15,6 +19,16 @@ contourPlotFile = 'TestCaseResults/Validation/NormalDistribution/normDist,1000dp
 plot3DFile = 'TestCaseResults/Validation/NormalDistribution/normDist,1000dp,3DPlot.fig';
 
 data = randn (1000, 2);
+regionSize = 256;
+pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
+
+% norm distribution, 10000 data points
+
+dataFile = 'TestCaseResults/Validation/NormalDistribution/normDist,10000dp.mat';
+contourPlotFile = 'TestCaseResults/Validation/NormalDistribution/normDist,10000dp,contour.fig';
+plot3DFile = 'TestCaseResults/Validation/NormalDistribution/normDist,10000dp,3DPlot.fig';
+
+data = randn (10000, 2);
 regionSize = 256;
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
 
@@ -38,6 +52,16 @@ data = rand (1000, 2);
 regionSize = 256;
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
 
+% uniform distribution, 10000 data points
+
+dataFile = 'TestCaseResults/Validation/UniformDistribution/uniformDist,10000dp.mat';
+contourPlotFile = 'TestCaseResults/Validation/UniformDistribution/uniformDist,10000dp,contour.fig';
+plot3DFile = 'TestCaseResults/Validation/UniformDistribution/uniformDist,10000dp,3DPlot.fig';
+
+data = rand (10000, 2);
+regionSize = 256;
+pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
+
 % exponential distribution, 100 data points
 
 dataFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,100dp.mat';
@@ -54,6 +78,16 @@ dataFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,1
 contourPlotFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,1000dp,contour.fig';
 plot3DFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,1000dp,3DPlot.fig';
 
-data = -log (rand (100, 2));
+data = -log (rand (1000, 2));
+regionSize = 256;
+pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
+
+% exponential distribution, 10000 data points
+
+dataFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,10000dp.mat';
+contourPlotFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,10000dp,contour.fig';
+plot3DFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,10000dp,3DPlot.fig';
+
+data = -log (rand (10000, 2));
 regionSize = 256;
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);

@@ -69,8 +69,8 @@ end
 
 hold off
 colorbar;
-xlabel ('x position (pixels)');
-ylabel ('y position (pixels)');
+xlabel ('x', 'FontSize', 17, 'FontWeight', 'bold');
+ylabel ('y', 'FontSize', 17, 'FontWeight', 'bold');
 
 end
 

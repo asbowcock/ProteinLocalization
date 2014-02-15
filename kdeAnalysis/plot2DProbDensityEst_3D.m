@@ -17,8 +17,8 @@ function plot2DProbDensityEst_3D (xCoord, yCoord, probDensity)
 figure;
 surf (xCoord, yCoord, probDensity, 'LineStyle', 'none');
 axis ij;
-xlabel ('x position (pixels)');
-ylabel ('y position (pixels)');
-zlabel ('Probability Density Estimate (pixels\^{}-2)')
+xlabel ('x', 'FontSize', 17, 'FontWeight', 'bold');
+ylabel ('y', 'FontSize', 17, 'FontWeight', 'bold');
+zlabel ('Probability Density Estimate', 'FontSize', 17);
 end
 
