@@ -102,25 +102,23 @@ axis (axisLimitsSurf);
 print (hFig, '-dpng', plot3DFile);
 close gcf;
 
-% exponential distribution, 10000 data points
+% exponential distribution, 100 data points
 
-dataFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,10000dp.mat';
-contourPlotFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,10000dp,contour';
-plot3DFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,10000dp,3DPlot';
+dataFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,100dp.mat';
+contourPlotFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,100dp,contour';
+plot3DFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,100dp,3DPlot';
 
-data = -log (rand (10000, 2));
+data = -log (rand (100, 2));
 regionSize = 256;
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
 
 hFig = hgload (contourPlotFile);
 axis tight;
-axisLimitsContour = axis;
 print (hFig, '-dpng', contourPlotFile);
 close gcf;
 
 hFig = hgload (plot3DFile);
 axis tight;
-axisLimitsSurf = axis;
 print (hFig, '-dpng', plot3DFile);
 close gcf;
 
@@ -134,22 +132,14 @@ data = -log (rand (1000, 2));
 regionSize = 256;
 pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
 
-% exponential distribution, 100 data points
 
-dataFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,100dp.mat';
-contourPlotFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,100dp,contour';
-plot3DFile = 'TestCaseResults/Validation/ExponentialDistribution/exponentialDist,100dp,3DPlot';
-
-data = -log (rand (100, 2));
-regionSize = 256;
-pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSize);
 
 hFig = hgload (contourPlotFile);
-axis (axisLimitsContour);
+axis tight;
 print (hFig, '-dpng', contourPlotFile);
 close gcf;
 
 hFig = hgload (plot3DFile);
-axis (axisLimitsSurf);
+axis tight;
 print (hFig, '-dpng', plot3DFile);
 close gcf;

@@ -68,6 +68,7 @@ for i = 1:numContours
 end
 
 hold off
+set (hPlot, colobar);
 %colorbar;
 xlabel ('x', 'FontSize', 17, 'FontWeight', 'bold');
 ylabel ('y', 'FontSize', 17, 'FontWeight', 'bold');

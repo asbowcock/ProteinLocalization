@@ -19,6 +19,6 @@ surf (xCoord, yCoord, probDensity, 'LineStyle', 'none');
 axis ij;
 xlabel ('x', 'FontSize', 17, 'FontWeight', 'bold');
 ylabel ('y', 'FontSize', 17, 'FontWeight', 'bold');
-zlabel ('Probability Density Estimate', 'FontSize', 17);
+zlabel ('PDE', 'FontSize', 17);
 end
 

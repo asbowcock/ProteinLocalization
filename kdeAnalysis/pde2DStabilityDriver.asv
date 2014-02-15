@@ -177,6 +177,6 @@ function hFig = plotPDEChange (probeNumber, pdeChange)
 hFig = figure;
 plot (probeNumber, pdeChange);
 xlabel ('Number of QDs');
-ylabel ('MSE (pixels^-4)', 'Interpreter', 'none');
+ylabel ('MSE (pixels\^{-4})');
 
 end
