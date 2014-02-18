@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Function:    validationTests
+%
+% Description: Performs the validation tests for the 2D PDE algorithm
+%
+% Parameters:  None
+%
+% Returned:    None
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % norm distribution, 10000 data points
 
 dataFile = 'TestCaseResults/Validation/NormalDistribution/normDist,10000dp.mat';
@@ -11,12 +21,14 @@ pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSiz
 hFig = hgload (contourPlotFile);
 axis tight;
 axisLimitsContour = axis;
+saveas (hFig, contourPlotFile);
 print (hFig, '-dpng', contourPlotFile);
 close gcf;
 
 hFig = hgload (plot3DFile);
 axis tight;
 axisLimitsSurf = axis;
+saveas (hFig, plot3DFile);
 print (hFig, '-dpng', plot3DFile);
 close gcf;
 
@@ -42,11 +54,13 @@ pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSiz
 
 hFig = hgload (contourPlotFile);
 axis (axisLimitsContour);
+saveas (hFig, contourPlotFile);
 print (hFig, '-dpng', contourPlotFile);
 close gcf;
 
 hFig = hgload (plot3DFile);
 axis (axisLimitsSurf);
+saveas (hFig, plot3DFile);
 print (hFig, '-dpng', plot3DFile);
 close gcf;
 
@@ -63,12 +77,14 @@ pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSiz
 hFig = hgload (contourPlotFile);
 axis tight;
 axisLimitsContour = axis;
+saveas (hFig, contourPlotFile);
 print (hFig, '-dpng', contourPlotFile);
 close gcf;
 
 hFig = hgload (plot3DFile);
 axis tight;
 axisLimitsSurf = axis;
+saveas (hFig, plot3DFile);
 print (hFig, '-dpng', plot3DFile);
 close gcf;
 
@@ -94,11 +110,13 @@ pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSiz
 
 hFig = hgload (contourPlotFile);
 axis (axisLimitsContour);
+saveas (hFig, contourPlotFile);
 print (hFig, '-dpng', contourPlotFile);
 close gcf;
 
 hFig = hgload (plot3DFile);
 axis (axisLimitsSurf);
+saveas (hFig, plot3DFile);
 print (hFig, '-dpng', plot3DFile);
 close gcf;
 
@@ -115,12 +133,14 @@ pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSiz
 hFig = hgload (contourPlotFile);
 axis tight;
 axisLimitsContour = axis;
+saveas (hFig, contourPlotFile);
 print (hFig, '-dpng', contourPlotFile);
 close gcf;
 
 hFig = hgload (plot3DFile);
 axis tight;
 axisLimitsSurf = axis;
+saveas (hFig, plot3DFile);
 print (hFig, '-dpng', plot3DFile);
 close gcf;
 
@@ -146,10 +166,14 @@ pde2DDriver (dataFile, contourPlotFile, plot3DFile, data,'regionSize', regionSiz
 
 hFig = hgload (contourPlotFile);
 axis (axisLimitsContour);
+saveas (hFig, contourPlotFile);
 print (hFig, '-dpng', contourPlotFile);
 close gcf;
 
 hFig = hgload (plot3DFile);
 axis (axisLimitsSurf);
+saveas (hFig, plot3DFile);
 print (hFig, '-dpng', plot3DFile);
 close gcf;
+
+clear;

@@ -13,7 +13,9 @@
 %              with respect to the number of probes is also displayed. Both
 %              the video and graph are saved to their repsective files.
 %
-% Parameters:  outputVideoFile - file name of the output video 
+% Parameters:  outputDataFile  - file name for the output data containing
+%                                the change in PDE data
+%              outputVideoFile - file name of the output video 
 %              outputGraphFile - file name of change in PDE graph
 %              inputData       - either a .mat file containing the 
 %                                controller class or a n-by-2 array 
@@ -38,13 +40,12 @@
 % Returned:    None
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function pde2DStabilityDriver (outputVideoFile, outputGraphFile, ...
+function pde2DStabilityDriver (outputDataFile, outputVideoFile, outputGraphFile, ...
                                inputData, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Constants  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 FRAME_RATE = 1;
 VIDEO_QUALITY = 100;
-MIN_NUMBER_OF_QDS = 20;
 LOWER_BOUND = -1000000; %nanometers
 UPPER_BOUND = 1000000; %nanometers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,7 +53,7 @@ UPPER_BOUND = 1000000; %nanometers
 % Initialize input parser
 theInputParser = inputParser;
 theInputParser = initializeInputParser (theInputParser);
-theInputParser.parse (outputVideoFile, outputGraphFile, inputData, ...
+theInputParser.parse (outputDataFile, outputVideoFile, outputGraphFile, inputData, ...
                       varargin{:});
 
 % If .mat file has been passed in
@@ -86,6 +87,12 @@ else
     end
 end
 
+% Error checks for valid number of probes
+if ~checkValidNumOfProbes (length (xyCoords))
+    errorMsgInvalidNumOfProbes = ERROR_MSG_INVALID_NUM_OF_PROBES;
+    error (errorMsgInvalidNumOfProbes{1});
+end
+
 % Initialize the video
 theVideo = VideoWriter (theInputParser.Results.outputVideoFile);
 theVideo.Quality = VIDEO_QUALITY;
@@ -95,11 +102,11 @@ open (theVideo);
 % Declare array for storing change in PDE
 sumPDEDiffSquared = 0;
 prevPDE = 0;
-pdeChange = zeros (length (xyCoords) - MIN_NUMBER_OF_QDS + 1, 1);
-probeNumber = MIN_NUMBER_OF_QDS:length (xyCoords);
+pdeChange = zeros (length (xyCoords) - MIN_NUM_OF_PROBES + 1, 1);
+probeNumber = MIN_NUM_OF_PROBES:length (xyCoords);
 probeNumber = probeNumber';
 
-for qdCount = MIN_NUMBER_OF_QDS:length (xyCoords)
+for qdCount = MIN_NUM_OF_PROBES:length (xyCoords)
 
 [bandwidth, probDensity, xCoord, yCoord] = kde2d (xyCoords(1:qdCount,:));
 
@@ -126,7 +133,7 @@ close (gcf);
                                                    prevPDE, ...
                                                    qdCount, ...
                                                    sumPDEDiffSquared);
-pdeChange (qdCount - MIN_NUMBER_OF_QDS + 1) = mse;
+pdeChange (qdCount - MIN_NUM_OF_PROBES + 1) = mse;
 prevPDE = probDensity;
 
 end
@@ -135,6 +142,9 @@ close (theVideo);
 
 hFig = plotPDEChange (probeNumber, pdeChange);
 saveas (hFig, theInputParser.Results.outputGraphFile);
+close (hFig);
+
+save (theInputParser.Results.outputDataFile, 'probeNumber', 'pdeChange');
 
 end
 
@@ -150,6 +160,7 @@ end
 
 function [theInputParser] = initializeInputParser (theInputParser)
 
+theInputParser.addRequired ('outputDataFile', @ischar);
 theInputParser.addRequired ('outputVideoFile', @ischar);
 theInputParser.addRequired ('outputGraphFile', @ischar);
 theInputParser.addRequired ('inputData', @(x) ischar (x) || isnumeric (x));

@@ -108,6 +108,12 @@ else
     end
 end
 
+% Error checks for valid number of probes
+if ~checkValidNumOfProbes (length (xyCoords)) 
+    errorMsgInvalidNumOfProbes = ERROR_MSG_INVALID_NUM_OF_PROBES;
+    error (errorMsgInvalidNumOfProbes{1});
+end
+
 % Calculate the probability density estimate
 [bandwidth, pde, xCoord, yCoord] = kde2d (xyCoords);
 
@@ -124,7 +130,7 @@ if (bHasImage)
 end
 
 plotContourMap2D (separatedContourMatrix, numContours);
-%displayNumberQDs (length (xyCoords));
+displayNumberQDs (length (xyCoords));
 set (gca, 'fontsize', 15);
 saveas (gcf, theInputParser.Results.outputContourPlotFile);
 close (gcf);
